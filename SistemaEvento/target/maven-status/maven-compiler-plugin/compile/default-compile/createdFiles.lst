@@ -1,0 +1,15 @@
+com\sistemaevento\util\ConexaoBD.class
+conexao.class
+com\sistemaevento\service\ParticipanteService.class
+com\sistemaevento\tabelas\Evento.class
+com\sistemaevento\tabelas\Palestrante.class
+com\sistemaevento\dao\ParticipanteDao.class
+com\sistemaevento\service\PalestranteService.class
+com\sistemaevento\dao\PalestranteDao.class
+Run.class
+com\sistemaevento\front\MenuPrincipalSwing.class
+com\sistemaevento\front\ParticipanteInscricaoFormSwing.class
+com\sistemaevento\service\EventoService.class
+com\sistemaevento\tabelas\Participante.class
+com\sistemaevento\dao\EventoDao.class
+com\sistemaevento\front\PalestranteEventoFormSwing.class
