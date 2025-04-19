@@ -38,6 +38,8 @@ O projeto segue uma estrutura dividida por pacotes:
 
 ## 🔄 4. Fluxo de Funcionamento
 
+| Pacote | Função |
+|--------|--------|
 | `MenuPrinciaplSwing` | Classe Princiapl de execução |
 
 ### Participante:
