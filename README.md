@@ -1,81 +1,116 @@
-# Sistema de Gerenciamento de Eventos
+# 📘 Documentação Técnica – SistemaEvento
 
-## Visão Geral
-O Sistema de Gerenciamento de Eventos é uma aplicação desenvolvida em Java para facilitar o gerenciamento de eventos, palestrantes e participantes. O sistema segue boas práticas de engenharia de software e inclui funcionalidades completas de cadastro, edição, exclusão e busca, além de oferecer uma interface gráfica intuitiva criada com Swing.
+---
 
-## Estrutura do Projeto
-O projeto adota uma arquitetura modular, dividida em três camadas principais:
+## 📌 1. Informações Gerais
 
-- **Camada de Aplicação:** Interface gráfica do usuário (Swing Forms) para interação com o sistema.
-- **Camada de Serviços:** Regras de negócio intermediando a interface do usuário e a camada de dados.
-- **Camada de Dados:** DAOs (Data Access Objects) para operações CRUD com o banco de dados SQLite.
+- **Projeto:** SistemaEvento
+- **Tecnologia principal:** Java 17 (Maven)
+- **Banco de Dados:** PostgreSQL
+- **Interface gráfica:** Java Swing
+- **Gerenciador de dependências:** Maven
 
-## Funcionalidades Principais
-1. **Gerenciamento de Eventos**
-   - Cadastro de Eventos: Criação de novos eventos com nome, descrição, data, local e capacidade de participantes.
-   - Edição de Eventos: Atualização de informações de eventos cadastrados.
-   - Exclusão de Eventos: Remoção de eventos do sistema.
-   - Consulta de Eventos: Pesquisa utilizando filtros como nome ou data.
-2. **Gerenciamento de Palestrantes**
-   - Cadastro de Palestrantes: Registro de palestrantes com nome, área de especialização e biografia.
-   - Associação a Eventos: Vinculação de palestrantes a eventos específicos.
-   - Edição e Exclusão: Atualização ou remoção de palestrantes do sistema.
-3. **Gerenciamento de Participantes**
-   - Cadastro de Participantes: Registro de participantes com informações pessoais e preferências.
-   - Inscrição em Eventos: Permissão para inscrição de participantes em eventos.
-   - Consulta de Participantes: Pesquisa detalhada de participantes cadastrados.
-4. **Funcionalidades Extras**
-   - Menu Principal: Navegação simples entre as telas do sistema.
-   - Validação de Dados: Garantia de preenchimento correto com campos obrigatórios e formatos validados.
-   - Mensagens de Confirmação: Pop-ups para melhorar a experiência do usuário.
+---
 
-## Tecnologias Utilizadas
-- **Linguagem de Programação:** Java
-- **Banco de Dados:** SQLite
-- **Interface Gráfica:** Java Swing
-- **Ferramenta de Build:** Apache Maven
-- **Controle de Versão:** Git/GitHub
+## 🎯 2. Objetivo do Sistema
 
-## Configuração e Execução
+O SistemaEvento é uma aplicação de desktop desenvolvida em Java com o objetivo de:
 
-### Requisitos
-- JDK 8 ou superior
-- Apache Maven instalado
-- SQLite instalado
+- Cadastrar **participantes** e vinculá-los a eventos
+- Cadastrar **palestrantes** e associá-los automaticamente aos eventos
+- Manter o histórico de inscrições e relações entre entidades no banco
 
-### Configuração do Ambiente
-1. Clone o repositório do projeto:
-   ```bash
-   git clone <URL_DO_REPOSITORIO>
+---
 
-2. Navegue até o diretório do projeto:3
-   ```bash
-   cd SistemaEvento
-   
-3. Construa o projeto com Maven:
-    ```bash
-    mvn clean install
-    
-### Execução
-Execute o arquivo JAR gerado:
-```bash
-java -jar target/SistemaEvento-1.0.jar
+## 🏗️ 3. Arquitetura e Estrutura
+
+O projeto segue uma estrutura dividida por pacotes:
+
+| Pacote | Função |
+|--------|--------|
+| `dao` | Acesso ao banco de dados (JDBC) |
+| `service` | Regras de negócio e lógica intermediária |
+| `tabelas` | Entidades que mapeiam as tabelas do banco |
+| `front` | Telas Swing (interface com o usuário) |
+  | `MenuPrinciaplSwing` | Classe Princiapl de execução |
+| `util` | Configuração de conexão com o banco |
+
+---
+
+## 🔄 4. Fluxo de Funcionamento
+
+### Participante:
+1. Usuário preenche nome, email e seleciona eventos
+2. Participante é salvo e seu ID é recuperado
+3. Para cada evento selecionado, é criada uma inscrição na tabela `inscricoes`
+
+### Palestrante:
+1. Usuário insere dados do palestrante e do evento
+2. Ambos são salvos separadamente
+3. É criado o vínculo entre evento e palestrante na tabela `evento_palestrante`
+
+---
+
+## 🧩 5. Estrutura do Banco de Dados
+
+### Tabelas:
+
+- `participante(id, nome, email)`
+- `palestrante(id, nome, curriculo, area_atuacao)`
+- `evento(id, nome, descricao, data, local, capacidade)`
+- `evento_palestrante(evento_id, palestrante_id)`
+- `inscricoes(participante_id, evento_id)`
+
+### Relacionamentos:
+
+- `participante` ↔ `evento`: N:N (via `inscricoes`)
+- `palestrante` ↔ `evento`: N:N (via `evento_palestrante`)
+
+---
+
+## ⚙️ 6. Configuração do Ambiente
+
+### Dependências Maven:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>42.5.0</version>
+    </dependency>
+</dependencies>
 ```
-**Acesse o sistema através da interface Swing exibida.**
 
-## Estrutura do Banco de Dados
-O banco de dados SQLite possui as seguintes tabelas principais:
+### Conexão ao banco (`ConexaoBD.java`):
 
-- Evento: Armazena dados de eventos.
-- Palestrante: Armazena informações de palestrantes.
-- Participante: Armazena dados de participantes.
-- Palestrante_Evento: Relaciona palestrantes com eventos.
-- Participante_Evento: Relaciona participantes com eventos.
+```java
+conn = DriverManager.getConnection(
+  "jdbc:postgresql://localhost:5432/seubanco",
+  "usuario", "senha"
+);
+```
 
-### Modelo Relacional
+---
+
+## 🧪 7. Execução
+
+### Compilar:
 ```bash
-Evento (1:N) Palestrante_Evento (N:1) Palestrante
-Evento (1:N) Participante_Evento (N:1) Participante
+mvn compile
+```
 
+### Executar:
+```bash
+mvn exec:java -Dexec.mainClass="com.sistemaevento.Run"
+```
 
+---
 
+## 👥 8. Equipe (Commits e Autores)
+
+| Autor     | Responsável |
+|-----------|-------------|
+| **Victor**   | Interface gráfica (Swing) |
+| **Samantha** | Acesso ao banco (DAO, conexão, execução) |
+| **Rayssa**   | Lógica de negócio (services e entidades) |
