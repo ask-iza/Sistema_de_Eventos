@@ -32,12 +32,13 @@ O projeto segue uma estrutura dividida por pacotes:
 | `service` | Regras de negócio e lógica intermediária |
 | `tabelas` | Entidades que mapeiam as tabelas do banco |
 | `front` | Telas Swing (interface com o usuário) |
-  | `MenuPrinciaplSwing` | Classe Princiapl de execução |
 | `util` | Configuração de conexão com o banco |
 
 ---
 
 ## 🔄 4. Fluxo de Funcionamento
+
+| `MenuPrinciaplSwing` | Classe Princiapl de execução |
 
 ### Participante:
 1. Usuário preenche nome, email e seleciona eventos
