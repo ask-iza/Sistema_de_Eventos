@@ -13,7 +13,7 @@ Aba usada para **cadastrar participantes** e **inscrevê-los em eventos existent
 ### ✅ Preencha:
 - Nome
 - Email
-- Selecione um ou mais eventos
+- Selecione um evento
 
 ### 🟢 Clique em:
 **"Cadastrar e Inscrever"**
