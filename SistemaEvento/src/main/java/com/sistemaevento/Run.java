@@ -1,3 +1,5 @@
+package com.sistemaevento;
+
 import com.sistemaevento.service.EventoService;
 import com.sistemaevento.service.PalestranteService;
 import com.sistemaevento.service.ParticipanteService;
