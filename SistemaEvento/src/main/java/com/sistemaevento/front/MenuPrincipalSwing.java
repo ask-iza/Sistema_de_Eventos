@@ -1,27 +1,63 @@
 package com.sistemaevento.front;
 
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
-public class MenuPrincipalSwing {
+public class MenuPrincipalSwing extends JFrame {
 
-    public void exibirMenu() {
-        JFrame frame = new JFrame("Sistema de Eventos");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 500);
+    public MenuPrincipalSwing() {
+        setTitle("Sistema de Eventos");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 400);
+        setLocationRelativeTo(null);
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        // Painel principal com layout em coluna
+        JPanel painel = new JPanel();
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+        painel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
 
-        tabbedPane.addTab("Participante", new ParticipanteInscricaoFormSwing().criarPainel());
-        tabbedPane.addTab("Palestrante", new PalestranteEventoFormSwing().criarPainel());
+        // Tamanho padrão dos botões
+        Dimension tamanhoBotao = new Dimension(200, 40);
 
-        frame.add(tabbedPane);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        // Botões com ações
+        painel.add(criarBotao("Participante", tamanhoBotao, e -> abrirJanela(new ParticipanteInscricaoFormSwing().criarPainel(), "Participante")));
+        painel.add(Box.createVerticalStrut(15));
+        painel.add(criarBotao("Palestrante", tamanhoBotao, e -> abrirJanela(new PalestranteEventoFormSwing().criarPainel(), "Palestrante")));
+        painel.add(Box.createVerticalStrut(15));
+        painel.add(criarBotao("Eventos", tamanhoBotao, e -> mostrarMensagem("Abrir painel de eventos")));
+        painel.add(Box.createVerticalStrut(15));
+        painel.add(criarBotao("Listar Eventos", tamanhoBotao, e -> mostrarMensagem("Abrir painel para listar eventos")));
+        painel.add(Box.createVerticalStrut(15));
+        painel.add(criarBotao("Excluir Evento", tamanhoBotao, e -> mostrarMensagem("Abrir painel para excluir eventos")));
+        painel.add(Box.createVerticalStrut(15));
+        painel.add(criarBotao("Atualizar Evento", tamanhoBotao, e -> mostrarMensagem("Abrir painel para atualizar eventos")));
+
+        add(painel);
+    }
+
+    private JButton criarBotao(String texto, Dimension tamanho, ActionListener listener) {
+        JButton botao = new JButton(texto);
+        botao.setMaximumSize(tamanho);
+        botao.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botao.addActionListener(listener);
+        return botao;
+    }
+
+    private void abrirJanela(JPanel painel, String titulo) {
+        JFrame novaJanela = new JFrame(titulo);
+        novaJanela.setSize(600, 600);
+        novaJanela.setLocationRelativeTo(null);
+        novaJanela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        novaJanela.add(painel);
+        novaJanela.setVisible(true);
+    }
+
+    private void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MenuPrincipalSwing().exibirMenu());
+        SwingUtilities.invokeLater(() -> new MenuPrincipalSwing().setVisible(true));
     }
 }
