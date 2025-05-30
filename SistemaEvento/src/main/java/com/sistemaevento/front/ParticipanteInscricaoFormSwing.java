@@ -51,6 +51,12 @@ public class ParticipanteInscricaoFormSwing {
                 return;
             }
 
+            // Validação de email mais rigorosa
+            if (!(email.contains("@") && email.contains(".com"))) {
+                JOptionPane.showMessageDialog(panel, "Email inválido! Deve conter '@' e '.com'.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             Participante participante = new Participante();
             participante.setNome(nome);
             participante.setEmail(email);
@@ -71,6 +77,7 @@ public class ParticipanteInscricaoFormSwing {
                 JOptionPane.showMessageDialog(panel, "Erro ao cadastrar participante.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
+
 
         panel.add(criarLinhaAlinhada("Nome:", nomeField));
         panel.add(Box.createVerticalStrut(10));

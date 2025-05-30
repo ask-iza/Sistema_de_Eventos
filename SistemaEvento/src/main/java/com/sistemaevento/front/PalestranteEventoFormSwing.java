@@ -1,7 +1,7 @@
 package com.sistemaevento.front;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.Arrays;
 import com.sistemaevento.service.EventoService;
@@ -17,17 +17,12 @@ public class PalestranteEventoFormSwing {
     public JPanel criarPainel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(new EmptyBorder(20, 40, 20, 40));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-        // Título Dados do Participante
-        JLabel tituloParticipante = new JLabel("Dados do Participante");
-        tituloParticipante.setFont(new Font("Arial", Font.BOLD, 16));
-        tituloParticipante.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Painel Participante
+        // Painel para dados do participante
         JPanel participantePanel = new JPanel();
         participantePanel.setLayout(new BoxLayout(participantePanel, BoxLayout.Y_AXIS));
-        participantePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        participantePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dados do Participante", TitledBorder.LEFT, TitledBorder.TOP));
 
         JTextField nomePalestranteField = new JTextField();
         JTextField curriculoField = new JTextField();
@@ -42,16 +37,10 @@ public class PalestranteEventoFormSwing {
         participantePanel.add(Box.createVerticalStrut(10));
         participantePanel.add(criarLinhaAlinhada("E-mail:", emailField));
 
-        // Título Dados do Evento
-        JLabel tituloEvento = new JLabel("Dados do Evento");
-        tituloEvento.setFont(new Font("Arial", Font.BOLD, 16));
-        tituloEvento.setAlignmentX(Component.CENTER_ALIGNMENT);
-        tituloEvento.setBorder(new EmptyBorder(20, 0, 0, 0)); // espaçamento superior
-
-        // Painel Evento
+        // Painel para dados do evento
         JPanel eventoPanel = new JPanel();
         eventoPanel.setLayout(new BoxLayout(eventoPanel, BoxLayout.Y_AXIS));
-        eventoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        eventoPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Dados do Evento", TitledBorder.LEFT, TitledBorder.TOP));
 
         JTextField nomeEventoField = new JTextField();
         JTextField descricaoField = new JTextField();
@@ -141,11 +130,8 @@ public class PalestranteEventoFormSwing {
             }
         });
 
-        panel.add(tituloParticipante);
-        panel.add(Box.createVerticalStrut(10));
         panel.add(participantePanel);
-        panel.add(tituloEvento);
-        panel.add(Box.createVerticalStrut(10));
+        panel.add(Box.createVerticalStrut(20));
         panel.add(eventoPanel);
         panel.add(Box.createVerticalStrut(20));
         panel.add(cadastrarButton);
