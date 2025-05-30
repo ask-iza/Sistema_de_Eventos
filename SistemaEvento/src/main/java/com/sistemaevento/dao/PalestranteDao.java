@@ -69,4 +69,24 @@ public class PalestranteDao {
             System.err.println("Erro ao vincular palestrante ao evento: " + e.getMessage());
         }
     }
+
+    public boolean verificarPalestrante(int id, String email) {
+        String sql = "SELECT COUNT(*) FROM palestrante WHERE id = ? AND email = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, id);
+            stmt.setString(2, email);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count == 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

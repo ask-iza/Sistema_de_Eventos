@@ -1,5 +1,7 @@
 package com.sistemaevento.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.sistemaevento.dao.PalestranteDao;
@@ -22,4 +24,8 @@ public class PalestranteService {
         dao.vincularPalestranteAoEvento(eventoId, palestranteId);
     }
     
+    public boolean validarCredenciais(int id, String email) {
+        return dao.verificarPalestrante(id, email);
+    }
+
 }

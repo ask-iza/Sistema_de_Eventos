@@ -6,19 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.sistemaevento.service.EventoService;
+import com.sistemaevento.service.PalestranteService;
 import com.sistemaevento.tabelas.Evento;
 
 public class ListarEventosFormSwing {
 
     private final EventoService eventoService = new EventoService();
-    private final boolean isPalestrante;
+    private final PalestranteService palestranteService = new PalestranteService();
     private List<Evento> eventosCarregados = new ArrayList<>();
 
-    public ListarEventosFormSwing(boolean isPalestrante) {
-        this.isPalestrante = isPalestrante;
-    }
-
-    public JPanel criarPainel() {
+    public JPanel criarPainel(JFrame frame) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
@@ -47,15 +44,11 @@ public class ListarEventosFormSwing {
         JScrollPane scrollPane = new JScrollPane(listaEventos);
         scrollPane.setPreferredSize(new Dimension(500, 250));
 
-        // Botão de Atualizar
-        JButton atualizarButton = new JButton("Atualizar Evento");
-        atualizarButton.setPreferredSize(new Dimension(200, 50));
-
-        atualizarButton.addActionListener(e -> {
-            if (!SessaoUsuario.isPalestrante()) {
-                JOptionPane.showMessageDialog(panel, "Acesso negado. Apenas palestrantes podem editar eventos.", "Acesso negado", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+        JButton editarButton = new JButton("Editar Evento");
+        editarButton.setPreferredSize(new Dimension(200, 50));
+        editarButton.addActionListener(e -> {
+            boolean autorizado = AutenticacaoDialog.pedirCredenciais(frame, palestranteService);
+            if (!autorizado) return;
 
             int index = listaEventos.getSelectedIndex();
             if (index == -1 || index >= eventosCarregados.size()) {
@@ -69,15 +62,11 @@ public class ListarEventosFormSwing {
             new EditarEventoFormSwing().abrirFormulario(eventoSelecionado);
         });
 
-        // Botão de Excluir
-        JButton excluirButton = new JButton("Excluir");
+        JButton excluirButton = new JButton("Excluir Evento");
         excluirButton.setPreferredSize(new Dimension(200, 50));
-
         excluirButton.addActionListener(e -> {
-            if (!SessaoUsuario.isPalestrante()) {
-                JOptionPane.showMessageDialog(panel, "Acesso negado. Apenas palestrantes podem excluir eventos.", "Acesso negado", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+            boolean autorizado = AutenticacaoDialog.pedirCredenciais(frame, palestranteService);
+            if (!autorizado) return;
 
             int index = listaEventos.getSelectedIndex();
             if (index == -1 || index >= eventosCarregados.size()) {
@@ -95,22 +84,18 @@ public class ListarEventosFormSwing {
 
             if (confirmacao == JOptionPane.YES_OPTION) {
                 Evento eventoSelecionado = eventosCarregados.get(index);
-                eventoService.excluir(eventoSelecionado.getId()); // Método esperado
+                eventoService.excluir(eventoSelecionado.getId());
                 JOptionPane.showMessageDialog(panel, "Evento excluído com sucesso.");
-                // Atualizar lista após exclusão
                 eventosCarregados = eventoService.listarTodos();
                 atualizarLista(listaEventosModel, eventosCarregados);
             }
         });
 
-        // Carregar eventos ao abrir
         eventosCarregados = eventoService.listarTodos();
         atualizarLista(listaEventosModel, eventosCarregados);
 
-        // Botões lado a lado
-        JPanel botoesPanel = new JPanel();
-        botoesPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
-        botoesPanel.add(atualizarButton);
+        JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        botoesPanel.add(editarButton);
         botoesPanel.add(excluirButton);
 
         panel.add(tituloLabel);

@@ -25,7 +25,7 @@ public class MenuPrincipalSwing extends JFrame {
         painel.add(Box.createVerticalStrut(15));
         painel.add(criarBotao("Palestrante", tamanhoBotao, e -> abrirJanela(new PalestranteEventoFormSwing().criarPainel(), "Palestrante")));
         painel.add(Box.createVerticalStrut(15));
-        painel.add(criarBotao("Eventos disponíveis", tamanhoBotao, e -> abrirJanela(new ListarEventosFormSwing(true).criarPainel(), "Eventos disponíveis")));
+        painel.add(criarBotao("Eventos disponíveis", tamanhoBotao, e -> abrirJanela(new ListarEventosFormSwing().criarPainel(this), "Eventos disponíveis")));
         painel.add(Box.createVerticalStrut(15));
 
         add(painel);
