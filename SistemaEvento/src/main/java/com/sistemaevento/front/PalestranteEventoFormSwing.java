@@ -1,6 +1,7 @@
 package com.sistemaevento.front;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.Arrays;
 import com.sistemaevento.service.EventoService;
@@ -16,17 +17,57 @@ public class PalestranteEventoFormSwing {
     public JPanel criarPainel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        panel.setBorder(new EmptyBorder(20, 40, 20, 40));
+
+        // Título Dados do Participante
+        JLabel tituloParticipante = new JLabel("Dados do Participante");
+        tituloParticipante.setFont(new Font("Arial", Font.BOLD, 16));
+        tituloParticipante.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Painel Participante
+        JPanel participantePanel = new JPanel();
+        participantePanel.setLayout(new BoxLayout(participantePanel, BoxLayout.Y_AXIS));
+        participantePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JTextField nomePalestranteField = new JTextField();
         JTextField curriculoField = new JTextField();
         JTextField areaField = new JTextField();
         JTextField emailField = new JTextField();
+
+        participantePanel.add(criarLinhaAlinhada("Nome do Palestrante:", nomePalestranteField));
+        participantePanel.add(Box.createVerticalStrut(10));
+        participantePanel.add(criarLinhaAlinhada("Currículo:", curriculoField));
+        participantePanel.add(Box.createVerticalStrut(10));
+        participantePanel.add(criarLinhaAlinhada("Área de Atuação:", areaField));
+        participantePanel.add(Box.createVerticalStrut(10));
+        participantePanel.add(criarLinhaAlinhada("E-mail:", emailField));
+
+        // Título Dados do Evento
+        JLabel tituloEvento = new JLabel("Dados do Evento");
+        tituloEvento.setFont(new Font("Arial", Font.BOLD, 16));
+        tituloEvento.setAlignmentX(Component.CENTER_ALIGNMENT);
+        tituloEvento.setBorder(new EmptyBorder(20, 0, 0, 0)); // espaçamento superior
+
+        // Painel Evento
+        JPanel eventoPanel = new JPanel();
+        eventoPanel.setLayout(new BoxLayout(eventoPanel, BoxLayout.Y_AXIS));
+        eventoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         JTextField nomeEventoField = new JTextField();
         JTextField descricaoField = new JTextField();
         JTextField dataField = new JTextField();
         JTextField localField = new JTextField();
         JTextField capacidadeField = new JTextField();
+
+        eventoPanel.add(criarLinhaAlinhada("Nome do Evento:", nomeEventoField));
+        eventoPanel.add(Box.createVerticalStrut(10));
+        eventoPanel.add(criarLinhaAlinhada("Descrição:", descricaoField));
+        eventoPanel.add(Box.createVerticalStrut(10));
+        eventoPanel.add(criarLinhaAlinhada("Data (YYYY-MM-DD):", dataField));
+        eventoPanel.add(Box.createVerticalStrut(10));
+        eventoPanel.add(criarLinhaAlinhada("Local:", localField));
+        eventoPanel.add(Box.createVerticalStrut(10));
+        eventoPanel.add(criarLinhaAlinhada("Capacidade:", capacidadeField));
 
         JButton cadastrarButton = new JButton("Cadastrar Evento e Palestrante");
         cadastrarButton.setPreferredSize(new Dimension(200, 50));
@@ -74,50 +115,38 @@ public class PalestranteEventoFormSwing {
                     JOptionPane.showMessageDialog(panel, "Erro ao salvar evento.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
 
-                } catch (Exception ex) {
-            boolean todosPreenchidos =
-                !nomePalestranteField.getText().trim().isEmpty() &&
-                !curriculoField.getText().trim().isEmpty() &&
-                !areaField.getText().trim().isEmpty() &&
-                !emailField.getText().trim().isEmpty() &&
-                !nomeEventoField.getText().trim().isEmpty() &&
-                !descricaoField.getText().trim().isEmpty() &&
-                !dataField.getText().trim().isEmpty() &&
-                !localField.getText().trim().isEmpty() &&
-                !capacidadeField.getText().trim().isEmpty();
+            } catch (Exception ex) {
+                boolean todosPreenchidos =
+                    !nomePalestranteField.getText().trim().isEmpty() &&
+                    !curriculoField.getText().trim().isEmpty() &&
+                    !areaField.getText().trim().isEmpty() &&
+                    !emailField.getText().trim().isEmpty() &&
+                    !nomeEventoField.getText().trim().isEmpty() &&
+                    !descricaoField.getText().trim().isEmpty() &&
+                    !dataField.getText().trim().isEmpty() &&
+                    !localField.getText().trim().isEmpty() &&
+                    !capacidadeField.getText().trim().isEmpty();
 
-            if (todosPreenchidos) {
-                JOptionPane.showMessageDialog(panel,
-                    "Ocorreu um erro mesmo com todos os campos preenchidos.\nVerifique os dados e tente novamente.",
-                    "Erro inesperado", JOptionPane.ERROR_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(panel,
-                    "Preencha todos os campos corretamente antes de cadastrar.",
-                    "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+                if (todosPreenchidos) {
+                    JOptionPane.showMessageDialog(panel,
+                        "Ocorreu um erro mesmo com todos os campos preenchidos.\nVerifique os dados e tente novamente.",
+                        "Erro inesperado", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(panel,
+                        "Preencha todos os campos corretamente antes de cadastrar.",
+                        "Campos incompletos", JOptionPane.WARNING_MESSAGE);
+                }
+
+                ex.printStackTrace();
             }
+        });
 
-            ex.printStackTrace();
-        }
-    });
-
-        // Adiciona campos com alinhamento
-        panel.add(criarLinhaAlinhada("Nome do Palestrante:", nomePalestranteField));
+        panel.add(tituloParticipante);
         panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("Currículo:", curriculoField));
+        panel.add(participantePanel);
+        panel.add(tituloEvento);
         panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("Área de Atuação:", areaField));
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("E-mail:", emailField));
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("Nome do Evento:", nomeEventoField));
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("Descrição:", descricaoField));
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("Data (YYYY-MM-DD):", dataField));
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("Local:", localField));
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(criarLinhaAlinhada("Capacidade:", capacidadeField));
+        panel.add(eventoPanel);
         panel.add(Box.createVerticalStrut(20));
         panel.add(cadastrarButton);
 
