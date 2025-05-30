@@ -9,7 +9,7 @@ public class MenuPrincipalSwing extends JFrame {
     public MenuPrincipalSwing() {
         setTitle("Sistema de Eventos");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 400);
+        setSize(400, 250);
         setLocationRelativeTo(null);
 
         // Painel principal com layout em coluna
@@ -25,13 +25,8 @@ public class MenuPrincipalSwing extends JFrame {
         painel.add(Box.createVerticalStrut(15));
         painel.add(criarBotao("Palestrante", tamanhoBotao, e -> abrirJanela(new PalestranteEventoFormSwing().criarPainel(), "Palestrante")));
         painel.add(Box.createVerticalStrut(15));
-        painel.add(criarBotao("Eventos", tamanhoBotao, e -> mostrarMensagem("Abrir painel de eventos")));
+        painel.add(criarBotao("Eventos disponíveis", tamanhoBotao, e -> abrirJanela(new ListarEventosFormSwing(true).criarPainel(), "Eventos disponíveis")));
         painel.add(Box.createVerticalStrut(15));
-        painel.add(criarBotao("Listar Eventos", tamanhoBotao, e -> mostrarMensagem("Abrir painel para listar eventos")));
-        painel.add(Box.createVerticalStrut(15));
-        painel.add(criarBotao("Excluir Evento", tamanhoBotao, e -> mostrarMensagem("Abrir painel para excluir eventos")));
-        painel.add(Box.createVerticalStrut(15));
-        painel.add(criarBotao("Atualizar Evento", tamanhoBotao, e -> mostrarMensagem("Abrir painel para atualizar eventos")));
 
         add(painel);
     }
@@ -53,11 +48,9 @@ public class MenuPrincipalSwing extends JFrame {
         novaJanela.setVisible(true);
     }
 
-    private void mostrarMensagem(String mensagem) {
-        JOptionPane.showMessageDialog(this, mensagem);
-    }
-
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new MenuPrincipalSwing().setVisible(true));
     }
+
 }

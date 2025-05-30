@@ -12,7 +12,7 @@ import com.sistemaevento.util.ConexaoBD;
 public class PalestranteDao {
 
     public int cadastrarPalestrante(Palestrante p) {
-        String sql = "INSERT INTO palestrante (nome, curriculo, area_atuacao) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO palestrante (nome, curriculo, area_atuacao, email) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = new ConexaoBD().getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -20,6 +20,8 @@ public class PalestranteDao {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCurriculo());
             stmt.setString(3, p.getArea_atuacao());
+            stmt.setString(4, p.getEmail());
+
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -37,7 +39,7 @@ public class PalestranteDao {
     }
 
     public void salvar(Palestrante p) {
-        String sql = "INSERT INTO palestrante (nome, curriculo, area_atuacao) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO palestrante (nome, curriculo, area_atuacao, email) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = new ConexaoBD().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -45,6 +47,7 @@ public class PalestranteDao {
             stmt.setString(1, p.getNome());
             stmt.setString(2, p.getCurriculo());
             stmt.setString(3, p.getArea_atuacao());
+            stmt.setString(4, p.getEmail());
             stmt.executeUpdate();
 
         } catch (SQLException e) {

@@ -109,5 +109,46 @@ public class EventoDao {
                 System.err.println("Erro ao vincular palestrante ao evento: " + e.getMessage());
             }
         }
+
+        public boolean atualizar(Evento evento) {
+            String sql = "UPDATE evento SET nome = ?, descricao = ?, data = ?, local = ?, capacidade = ? WHERE id = ?";
+            try (Connection conn = new ConexaoBD().getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setString(1, evento.getNome());
+                stmt.setString(2, evento.getDescricao());
+                stmt.setString(3, evento.getData());
+                stmt.setString(4, evento.getLocal());
+                stmt.setInt(5, evento.getCapacidade());
+                stmt.setInt(6, evento.getId());
+
+                int linhasAfetadas = stmt.executeUpdate();
+                return linhasAfetadas > 0;
+            } catch (SQLException e) {
+                System.err.println("Erro ao atualizar evento: " + e.getMessage());
+                return false;
+            }
+        }
+
+    public boolean excluir(int id) {
+        String sqlDeleteVinculos = "DELETE FROM evento_palestrante WHERE evento_id = ?";
+        String sqlDeleteEvento = "DELETE FROM evento WHERE id = ?";
+        try (Connection conn = new ConexaoBD().getConnection()) {
+            // Exclui os vínculos primeiro
+            try (PreparedStatement stmtVinculos = conn.prepareStatement(sqlDeleteVinculos)) {
+                stmtVinculos.setInt(1, id);
+                stmtVinculos.executeUpdate();
+            }
+            // Agora exclui o evento
+            try (PreparedStatement stmtEvento = conn.prepareStatement(sqlDeleteEvento)) {
+                stmtEvento.setInt(1, id);
+                int linhasAfetadas = stmtEvento.executeUpdate();
+                return linhasAfetadas > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao excluir evento: " + e.getMessage());
+            return false;
+        }
+    }
         
 }

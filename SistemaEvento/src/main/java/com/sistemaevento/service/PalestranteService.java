@@ -12,7 +12,7 @@ public class PalestranteService {
     }
 
     public int cadastrarRetornandoId(Palestrante p) {
-        return dao.cadastrarPalestrante(p); // já existe no DAO
+        return dao.cadastrarPalestrante(p); 
     }
 
     public void vincularPalestrante(int eventoId, int palestranteId) {

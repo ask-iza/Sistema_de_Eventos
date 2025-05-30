@@ -5,6 +5,7 @@ public class Palestrante {
     private String nome;
     private String curriculo;
     private String area_atuacao;
+    private String email;
 
     public int getId() {
         return id;
@@ -36,5 +37,13 @@ public class Palestrante {
 
     public void setArea_atuacao(String area_atuacao) {
         this.area_atuacao = area_atuacao;
+    }
+
+    public String getEmail() {
+        return area_atuacao;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

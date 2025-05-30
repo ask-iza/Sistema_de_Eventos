@@ -19,6 +19,14 @@ public class EventoService {
     public Evento buscarPorNome(String nome) {
         return dao.buscarPorNome(nome);
     }
+
+    public boolean atualizar(Evento evento) {
+        return dao.atualizar(evento);
+    }
+
+    public boolean excluir(int id) {
+        return dao.excluir(id);
+    }
     
     public int salvarRetornandoId(Evento evento) {
         return dao.salvar(evento); // já existe no DAO e retorna o ID

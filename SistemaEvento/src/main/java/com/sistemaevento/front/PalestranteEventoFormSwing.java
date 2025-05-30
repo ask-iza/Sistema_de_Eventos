@@ -21,6 +21,7 @@ public class PalestranteEventoFormSwing {
         JTextField nomePalestranteField = new JTextField();
         JTextField curriculoField = new JTextField();
         JTextField areaField = new JTextField();
+        JTextField emailField = new JTextField();
         JTextField nomeEventoField = new JTextField();
         JTextField descricaoField = new JTextField();
         JTextField dataField = new JTextField();
@@ -38,6 +39,7 @@ public class PalestranteEventoFormSwing {
                 palestrante.setNome(nomePalestranteField.getText().trim());
                 palestrante.setCurriculo(curriculoField.getText().trim());
                 palestrante.setArea_atuacao(areaField.getText().trim());
+                palestrante.setEmail(emailField.getText().trim());
 
                 int idPalestrante = palestranteService.cadastrarRetornandoId(palestrante);
                 if (idPalestrante <= 0) {
@@ -62,6 +64,7 @@ public class PalestranteEventoFormSwing {
                     nomePalestranteField.setText("");
                     curriculoField.setText("");
                     areaField.setText("");
+                    emailField.setText("");
                     nomeEventoField.setText("");
                     descricaoField.setText("");
                     dataField.setText("");
@@ -76,6 +79,7 @@ public class PalestranteEventoFormSwing {
                 !nomePalestranteField.getText().trim().isEmpty() &&
                 !curriculoField.getText().trim().isEmpty() &&
                 !areaField.getText().trim().isEmpty() &&
+                !emailField.getText().trim().isEmpty() &&
                 !nomeEventoField.getText().trim().isEmpty() &&
                 !descricaoField.getText().trim().isEmpty() &&
                 !dataField.getText().trim().isEmpty() &&
@@ -102,6 +106,8 @@ public class PalestranteEventoFormSwing {
         panel.add(criarLinhaAlinhada("Currículo:", curriculoField));
         panel.add(Box.createVerticalStrut(10));
         panel.add(criarLinhaAlinhada("Área de Atuação:", areaField));
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(criarLinhaAlinhada("E-mail:", emailField));
         panel.add(Box.createVerticalStrut(10));
         panel.add(criarLinhaAlinhada("Nome do Evento:", nomeEventoField));
         panel.add(Box.createVerticalStrut(10));
