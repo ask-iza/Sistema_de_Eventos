@@ -2,9 +2,12 @@ package com.sistemaevento.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.sistemaevento.dao.ParticipanteDao;
 import com.sistemaevento.tabelas.Participante;
 
+@Service
 public class ParticipanteService {
     private ParticipanteDao dao = new ParticipanteDao();
 

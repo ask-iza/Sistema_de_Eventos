@@ -1,49 +1,31 @@
 package com.sistemaevento.tabelas;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "palestrante")
 public class Palestrante {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String nome;
     private String curriculo;
     private String area_atuacao;
     private String email;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCurriculo() {
-        return curriculo;
-    }
-
-    public void setCurriculo(String curriculo) {
-        this.curriculo = curriculo;
-    }
-
-    public String getArea_atuacao() {
-        return area_atuacao;
-    }
-
-    public void setArea_atuacao(String area_atuacao) {
-        this.area_atuacao = area_atuacao;
-    }
-
-    public String getEmail() {
-        return area_atuacao;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @OneToMany(mappedBy = "palestrante", cascade = CascadeType.ALL)
+    private List<Evento> eventos;
 }

@@ -3,15 +3,17 @@ package com.sistemaevento.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class ConexaoBD {
+    private static final Dotenv dotenv = Dotenv.load();
     private static final String HOST = "localhost";
     private static final String PORT = "5439";
     private static final String DATABASE = "postgres";
     private static final String USUARIO = "postgres";
     private static final String SENHA = "123";
 
-    private static final String URL = "jdbc:postgresql://localhost:5439/postgres"; //"jdbc:postgresql://" + HOST + ":" + PORT + "/" + DATABASE;
+    private static final String URL = "jdbc:postgresql://localhost:5439/postgres";
 
     private Connection conn = null;
 

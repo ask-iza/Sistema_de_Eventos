@@ -1,8 +1,11 @@
 package com.sistemaevento.service;
 
+import org.springframework.stereotype.Service;
+
 import com.sistemaevento.dao.PalestranteDao;
 import com.sistemaevento.tabelas.Palestrante;
 
+@Service
 public class PalestranteService {
     
     private PalestranteDao dao = new PalestranteDao();

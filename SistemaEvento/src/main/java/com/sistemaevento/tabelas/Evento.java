@@ -1,7 +1,10 @@
 package com.sistemaevento.tabelas;
 
 import java.util.List;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "evento")
 public class Evento {
     private int id;
     private String nome;

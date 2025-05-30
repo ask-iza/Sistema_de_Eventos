@@ -52,10 +52,8 @@ public class ListarEventosFormSwing {
         atualizarButton.setPreferredSize(new Dimension(200, 50));
 
         atualizarButton.addActionListener(e -> {
-            if (!isPalestrante) {
-                JOptionPane.showMessageDialog(panel,
-                        "Apenas palestrantes podem atualizar eventos.",
-                        "Acesso negado", JOptionPane.WARNING_MESSAGE);
+            if (!SessaoUsuario.isPalestrante()) {
+                JOptionPane.showMessageDialog(panel, "Acesso negado. Apenas palestrantes podem editar eventos.", "Acesso negado", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -76,10 +74,8 @@ public class ListarEventosFormSwing {
         excluirButton.setPreferredSize(new Dimension(200, 50));
 
         excluirButton.addActionListener(e -> {
-            if (!isPalestrante) {
-                JOptionPane.showMessageDialog(panel,
-                        "Apenas palestrantes podem excluir eventos.",
-                        "Acesso negado", JOptionPane.WARNING_MESSAGE);
+            if (!SessaoUsuario.isPalestrante()) {
+                JOptionPane.showMessageDialog(panel, "Acesso negado. Apenas palestrantes podem excluir eventos.", "Acesso negado", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
