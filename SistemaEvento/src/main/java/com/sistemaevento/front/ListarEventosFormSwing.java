@@ -128,15 +128,22 @@ public class ListarEventosFormSwing {
             participantesPanel.setLayout(new BoxLayout(participantesPanel, BoxLayout.Y_AXIS));
             participantesPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-            int count = 1;
-            for (Participante participante : participantes) {
-                // Adiciona o nome
-                participantesPanel.add(new JLabel(count + "- Nome: " + participante.getNome()));
-                
-                // Adiciona o e-mail em uma linha separada
-                participantesPanel.add(new JLabel("     E-mail: " + participante.getEmail()));  // Indenta o e-mail para destacá-lo
+            if (participantes.isEmpty()) {
+                JLabel vazio = new JLabel("Nenhum participante ainda");
+                vazio.setFont(new Font("Arial", Font.ITALIC, 14));
+                vazio.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-                count++;
+                participantesPanel.add(Box.createVerticalGlue());
+                participantesPanel.add(vazio);
+                participantesPanel.add(Box.createVerticalGlue());
+            } else {
+                int count = 1;
+                for (Participante participante : participantes) {
+                    participantesPanel.add(new JLabel(count + "- Nome: " + participante.getNome()));
+                    participantesPanel.add(new JLabel("     E-mail: " + participante.getEmail()));
+                    participantesPanel.add(Box.createVerticalStrut(10)); // espaçamento
+                    count++;
+                }
             }
 
             JFrame participantesFrame = new JFrame("Participantes do Evento");
@@ -145,6 +152,7 @@ public class ListarEventosFormSwing {
             participantesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             participantesFrame.add(participantesPanel);
             participantesFrame.setVisible(true);
+
         });
 
         // Carregar eventos ao abrir
@@ -174,10 +182,6 @@ public class ListarEventosFormSwing {
             for (Evento evento : eventos) {
                 // Verifica se PalestrantesIds é null, caso seja, inicializa como uma lista vazia
                 List<Integer> palestrantesIds = evento.getPalestrantesIds() == null ? new ArrayList<>() : evento.getPalestrantesIds();
-                
-                // Depuração para verificar os IDs dos palestrantes
-                System.out.println("Evento: " + evento.getNome());
-                System.out.println("Palestrante ID: " + palestrantesIds);
 
                 String nomePalestrante = evento.getPalestranteNome();
                 if (nomePalestrante == null || nomePalestrante.isBlank()) {

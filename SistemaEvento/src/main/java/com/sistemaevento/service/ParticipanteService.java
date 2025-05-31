@@ -39,4 +39,5 @@ public class ParticipanteService {
     public void excluirParticipante(int participanteId) {
         dao.excluirParticipante(participanteId);
     }
+
 }
