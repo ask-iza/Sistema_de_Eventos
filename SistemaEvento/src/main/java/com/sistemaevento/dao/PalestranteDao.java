@@ -50,6 +50,12 @@ public class PalestranteDao {
             stmt.setString(4, p.getEmail());
             stmt.executeUpdate();
 
+            ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    int idGerado = rs.getInt(1);
+                    System.out.println("Palestrante salvo com ID: " + idGerado);
+            }
+
             
 
         } catch (SQLException e) {
@@ -117,27 +123,29 @@ public class PalestranteDao {
     }
 
 
-        public Palestrante buscarPalestrantePorNome(String nome) {
-        String sql = "SELECT * FROM palestrante WHERE nome = ?";
+    public Palestrante buscarPorNomeEEmail(String nome, String email) {
+        String sql = "SELECT * FROM palestrante WHERE nome = ? AND email = ? LIMIT 1";
         try (Connection conn = new ConexaoBD().getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, nome);
+            stmt.setString(2, email);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Palestrante palestrante = new Palestrante();
-                palestrante.setId(rs.getInt("id"));
-                palestrante.setNome(rs.getString("nome"));
-                palestrante.setCurriculo(rs.getString("curriculo"));
-                palestrante.setArea_atuacao(rs.getString("area_atuacao"));
-                palestrante.setEmail(rs.getString("email"));
-                return palestrante;
+                Palestrante p = new Palestrante();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setCurriculo(rs.getString("curriculo"));
+                p.setArea_atuacao(rs.getString("area_atuacao"));
+                p.setEmail(rs.getString("email"));
+                return p;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

@@ -30,4 +30,12 @@ public class PalestranteService {
         return dao.buscarPalestrantePorId(id);
     }
 
+    public int obterOuCadastrarPalestrante(Palestrante novo) {
+        Palestrante existente = dao.buscarPorNomeEEmail(novo.getNome(), novo.getEmail());
+        if (existente != null) {
+            return existente.getId();
+        }
+        return dao.cadastrarPalestrante(novo);
+    }
+
 }
