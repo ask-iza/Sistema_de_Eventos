@@ -50,6 +50,8 @@ public class PalestranteDao {
             stmt.setString(4, p.getEmail());
             stmt.executeUpdate();
 
+            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -89,10 +91,11 @@ public class PalestranteDao {
         return false;
     }
 
-        public Palestrante buscarPalestrantePorId(int id) {
+    public Palestrante buscarPalestrantePorId(int id) {
+        System.out.println("Buscando palestrante com ID: " + id);  // Depuração
         String sql = "SELECT * FROM palestrante WHERE id = ?";
         try (Connection conn = new ConexaoBD().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -111,6 +114,31 @@ public class PalestranteDao {
             e.printStackTrace();
         }
         return null;  // Caso não encontre o palestrante
+    }
+
+
+        public Palestrante buscarPalestrantePorNome(String nome) {
+        String sql = "SELECT * FROM palestrante WHERE nome = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Palestrante palestrante = new Palestrante();
+                palestrante.setId(rs.getInt("id"));
+                palestrante.setNome(rs.getString("nome"));
+                palestrante.setCurriculo(rs.getString("curriculo"));
+                palestrante.setArea_atuacao(rs.getString("area_atuacao"));
+                palestrante.setEmail(rs.getString("email"));
+                return palestrante;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

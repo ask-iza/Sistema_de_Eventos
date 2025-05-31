@@ -127,6 +127,7 @@ public class PalestranteEventoFormSwing {
                 }
 
                 Evento evento = new Evento();
+                evento.setNome(nomeEventoField.getText().trim()); // <-- Adicione esta linha!
                 evento.setDescricao(descricaoField.getText().trim());
                 evento.setData(dataField[0].getText().trim());
                 evento.setLocal(localField.getText().trim());
@@ -138,7 +139,7 @@ public class PalestranteEventoFormSwing {
                 int idEvento = eventoService.salvarRetornandoId(evento);
                 if (idEvento > 0) {
                     eventoService.vincularPalestrante(idEvento, idPalestrante);
-                    JOptionPane.showMessageDialog(panel, "Evento e Palestrante cadastrados com sucesso!\nEvento ID: " + idEvento, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, "Evento e Palestrante cadastrados com sucesso!\nPalestrante ID: " + idPalestrante, "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
                     // Limpar campos
                     nomePalestranteField.setText("");

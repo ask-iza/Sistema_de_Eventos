@@ -41,94 +41,103 @@ public class EventoDao {
             return -1;
         }      
 
-        public List<Evento> listarTodos() {
-            List<Evento> eventos = new ArrayList<>();
-            String sql = "SELECT * FROM evento";
-        
-            try (Connection conn = new ConexaoBD().getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql);
-                 ResultSet rs = stmt.executeQuery()) {
-        
-                while (rs.next()) {
-                    Evento e = new Evento();
-                    e.setId(rs.getInt("id"));
-                    e.setNome(rs.getString("nome"));
-                    e.setDescricao(rs.getString("descricao"));
-                    e.setData(rs.getString("data"));
-                    e.setLocal(rs.getString("local"));
-                    e.setCapacidade(rs.getInt("capacidade"));
-                    eventos.add(e);
-                }
-        
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public List<Evento> listarTodosComPalestrante() {
+        List<Evento> eventos = new ArrayList<>();
+        String sql = """
+            SELECT e.id, e.nome, e.descricao, e.data, e.local, e.capacidade, p.nome AS palestrante_nome
+            FROM evento e
+            LEFT JOIN evento_palestrante ep ON e.id = ep.evento_id
+            LEFT JOIN palestrante p ON ep.palestrante_id = p.id
+        """;
+
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Evento e = new Evento();
+                e.setId(rs.getInt("id"));
+                e.setNome(rs.getString("nome"));
+                e.setDescricao(rs.getString("descricao"));
+                e.setData(rs.getString("data"));
+                e.setLocal(rs.getString("local"));
+                e.setCapacidade(rs.getInt("capacidade"));
+
+                e.setPalestranteNome(rs.getString("palestrante_nome")); // <- Novo campo
+
+                eventos.add(e);
             }
-        
-            return eventos;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
+        return eventos;
+    }
 
-        public Evento buscarPorNome(String nome) {
-            String sql = "SELECT * FROM evento WHERE nome = ? LIMIT 1";
+
+
+    public Evento buscarPorNome(String nome) {
+        String sql = "SELECT * FROM evento WHERE nome = ? LIMIT 1";
         
-            try (Connection conn = new ConexaoBD().getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = new ConexaoBD().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
         
-                stmt.setString(1, nome);
-                ResultSet rs = stmt.executeQuery();
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
         
-                if (rs.next()) {
-                    Evento e = new Evento();
-                    e.setId(rs.getInt("id"));
-                    e.setNome(rs.getString("nome"));
-                    e.setDescricao(rs.getString("descricao"));
-                    e.setData(rs.getString("data"));
-                    e.setLocal(rs.getString("local"));
-                    e.setCapacidade(rs.getInt("capacidade"));
-                    return e;
-                }
-        
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (rs.next()) {
+                Evento e = new Evento();
+                e.setId(rs.getInt("id"));
+                e.setNome(rs.getString("nome"));
+                e.setDescricao(rs.getString("descricao"));
+                e.setData(rs.getString("data"));
+                e.setLocal(rs.getString("local"));
+                e.setCapacidade(rs.getInt("capacidade"));
+                return e;
             }
         
-            return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         
-        public void vincularPalestranteAoEvento(int eventoId, int palestranteId) {
-            String sql = "INSERT INTO evento_palestrante (evento_id, palestrante_id) VALUES (?, ?)";
+        return null;
+    }
         
-            try (Connection conn = new ConexaoBD().getConnection();
-                 PreparedStatement stmt = conn.prepareStatement(sql)) {
+    public void vincularPalestranteAoEvento(int eventoId, int palestranteId) {
+        String sql = "INSERT INTO evento_palestrante (evento_id, palestrante_id) VALUES (?, ?)";
         
-                stmt.setInt(1, eventoId);
-                stmt.setInt(2, palestranteId);
-                stmt.executeUpdate();
+        try (Connection conn = new ConexaoBD().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
         
-            } catch (SQLException e) {
-                System.err.println("Erro ao vincular palestrante ao evento: " + e.getMessage());
-            }
+            stmt.setInt(1, eventoId);
+            stmt.setInt(2, palestranteId);
+            stmt.executeUpdate();
+        
+        } catch (SQLException e) {
+            System.err.println("Erro ao vincular palestrante ao evento: " + e.getMessage());
         }
+    }
 
-        public boolean atualizar(Evento evento) {
-            String sql = "UPDATE evento SET nome = ?, descricao = ?, data = ?, local = ?, capacidade = ? WHERE id = ?";
-            try (Connection conn = new ConexaoBD().getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+    public boolean atualizar(Evento evento) {
+        String sql = "UPDATE evento SET nome = ?, descricao = ?, data = ?, local = ?, capacidade = ? WHERE id = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                stmt.setString(1, evento.getNome());
-                stmt.setString(2, evento.getDescricao());
-                stmt.setString(3, evento.getData());
-                stmt.setString(4, evento.getLocal());
-                stmt.setInt(5, evento.getCapacidade());
-                stmt.setInt(6, evento.getId());
+            stmt.setString(1, evento.getNome());
+            stmt.setString(2, evento.getDescricao());
+            stmt.setString(3, evento.getData());
+            stmt.setString(4, evento.getLocal());
+            stmt.setInt(5, evento.getCapacidade());
+            stmt.setInt(6, evento.getId());
 
-                int linhasAfetadas = stmt.executeUpdate();
-                return linhasAfetadas > 0;
-            } catch (SQLException e) {
-                System.err.println("Erro ao atualizar evento: " + e.getMessage());
-                return false;
-            }
+            int linhasAfetadas = stmt.executeUpdate();
+            return linhasAfetadas > 0;
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar evento: " + e.getMessage());
+            return false;
         }
+    }
 
     public boolean excluir(int id) {
         String sqlDeleteVinculos = "DELETE FROM evento_palestrante WHERE evento_id = ?";
@@ -150,5 +159,45 @@ public class EventoDao {
             return false;
         }
     }
+
+        public List<Evento> listarEventosComPalestrante() {
+        List<Evento> eventos = new ArrayList<>();
+        String sql = """
+            SELECT e.id, e.nome, e.descricao, e.data, e.local, e.capacidade, p.nome AS palestrante_nome
+            FROM evento e
+            LEFT JOIN evento_palestrante ep ON e.id = ep.evento_id
+            LEFT JOIN palestrante p ON ep.palestrante_id = p.id
+        """;
+
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Evento e = new Evento();
+                e.setId(rs.getInt("id"));
+                e.setNome(rs.getString("nome"));
+                e.setDescricao(rs.getString("descricao"));
+                e.setData(rs.getString("data"));
+                e.setLocal(rs.getString("local"));
+                e.setCapacidade(rs.getInt("capacidade"));
+
+                // Armazene o nome do palestrante diretamente (adicione um novo campo na classe Evento se necessário)
+                String nomePalestrante = rs.getString("palestrante_nome");
+                if (nomePalestrante != null) {
+                    e.setDescricao(e.getDescricao() + "\nPalestrante: " + nomePalestrante); // ou use um campo dedicado
+                } else {
+                    e.setDescricao(e.getDescricao() + "\nPalestrante: Convidado Especial");
+                }
+
+                eventos.add(e);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return eventos;
+    } 
         
 }

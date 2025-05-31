@@ -16,10 +16,10 @@ public class EventoService {
         dao.salvar(evento);
     }
 
-    public List<Evento> listarTodos() {
-        return dao.listarTodos();
+    public List<Evento> listarComPalestrante() {
+        return dao.listarTodosComPalestrante();
     }
-    
+
     public Evento buscarPorNome(String nome) {
         return dao.buscarPorNome(nome);
     }
@@ -39,6 +39,6 @@ public class EventoService {
     public void vincularPalestrante(int eventoId, int palestranteId) {
         dao.vincularPalestranteAoEvento(eventoId, palestranteId);
         
-    }    
+    } 
 
 }

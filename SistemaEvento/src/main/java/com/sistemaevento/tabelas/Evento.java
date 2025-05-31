@@ -69,4 +69,15 @@ public class Evento {
     public void setPalestrantesIds(List<Integer> palestrantesIds) {
         this.palestrantesIds = palestrantesIds;
     }
+
+    @Transient // Não mapeia para o banco de dados diretamente
+    private String palestranteNome;
+
+    public String getPalestranteNome() {
+        return palestranteNome;
+    }
+
+    public void setPalestranteNome(String palestranteNome) {
+        this.palestranteNome = palestranteNome;
+    }
 }

@@ -26,7 +26,7 @@ public class ParticipanteInscricaoFormSwing {
 
         JLabel eventoLabel = new JLabel("Selecione eventos:");
         DefaultListModel<String> listaEventosModel = new DefaultListModel<>();
-        List<Evento> eventos = eventoService.listarTodos();
+        List<Evento> eventos = eventoService.listarComPalestrante();
         for (Evento evento : eventos) {
             listaEventosModel.addElement(evento.getNome());
         }

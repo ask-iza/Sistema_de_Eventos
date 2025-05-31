@@ -101,7 +101,7 @@ public class ListarEventosFormSwing {
                     Evento eventoSelecionado = eventosCarregados.get(index);
                     eventoService.excluir(eventoSelecionado.getId());
                     JOptionPane.showMessageDialog(panel, "Evento excluído com sucesso.");
-                    eventosCarregados = eventoService.listarTodos();
+                    eventosCarregados = eventoService.listarComPalestrante();
                     atualizarLista(listaEventosModel, eventosCarregados);
                 }
             }
@@ -148,7 +148,7 @@ public class ListarEventosFormSwing {
         });
 
         // Carregar eventos ao abrir
-        eventosCarregados = eventoService.listarTodos();
+        eventosCarregados = eventoService.listarComPalestrante();
         atualizarLista(listaEventosModel, eventosCarregados);
 
         // Painel de botões com espaçamento
@@ -175,13 +175,26 @@ public class ListarEventosFormSwing {
                 // Verifica se PalestrantesIds é null, caso seja, inicializa como uma lista vazia
                 List<Integer> palestrantesIds = evento.getPalestrantesIds() == null ? new ArrayList<>() : evento.getPalestrantesIds();
                 
-                // Verifica se existe um palestrante vinculado ao evento
-                String nomePalestrante = "Convidado Especial";
+                // Depuração para verificar os IDs dos palestrantes
+                System.out.println("Evento: " + evento.getNome());
+                System.out.println("Palestrante ID: " + palestrantesIds);
+
+                String nomePalestrante = evento.getPalestranteNome();
+                if (nomePalestrante == null || nomePalestrante.isBlank()) {
+                    nomePalestrante = "Convidado Especial";
+                }
+                // Default caso não haja palestrante
                 if (!palestrantesIds.isEmpty()) {
                     int palestranteId = palestrantesIds.get(0);  // Considerando que apenas um palestrante é vinculado
+                    System.out.println("Buscando palestrante com ID: " + palestranteId);
                     Palestrante palestrante = palestranteService.buscarPalestrantePorId(palestranteId);
+                    
                     if (palestrante != null) {
-                        nomePalestrante = palestrante.getNome();
+                        System.out.println("Palestrante encontrado: " + palestrante.getNome());
+                        nomePalestrante = palestrante.getNome();  // Atribuindo o nome do palestrante
+                    } else {
+                        System.out.println("Palestrante não encontrado para o evento: " + evento.getNome());
+                        nomePalestrante = "Palestrante não encontrado";  // Caso o palestrante não exista no banco
                     }
                 }
 
