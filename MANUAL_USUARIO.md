@@ -1,56 +1,101 @@
-# 📖 Manual do Usuário – SistemaEvento
+# 📖 Manual do Usuário
+
+## 🧪 Requisitos para rodar o sistema
+
+- Java 17
+- Maven instalado
+- PostgreSQL rodando e configurado
+- Arquivo `.env` (ou similar)
+- URL de conexão definida em `ConexaoBD.java` com suas credenciais
+
+---
 
 ---
 
 ### 🚀 Classe principal: `MenuPrincipalSwing`
 
+Essa é a classe inicial que abre a interface gráfica do sistema.
+
 ---
 
-## 🟩 Tela: Participante
+## 🟩 Tela: **Participante**
 
-Aba usada para **cadastrar participantes** e **inscrevê-los em eventos existentes**.
+Aba usada para **cadastrar participantes** e **inscrevê-los em eventos existentes** com exibição detalhada de cada evento.
 
-### ✅ Preencha:
-- Nome
-- Email
-- Selecione um evento
+### ✅ O que preencher:
+- **Nome**
+- **Email** (obrigatório conter `@` e `.com`)
+- Selecionar pelo menos um evento (com nome, data, local, capacidade e nome do palestrante visíveis)
 
 ### 🟢 Clique em:
-**"Cadastrar e Inscrever"**
+🔘 **"Cadastrar e Inscrever"**
 
-### 📣 Resultado:
-O sistema mostrará a mensagem:
-
-> `Cadastrado com ID: X e inscrito! 🎉`
+### 📣 O que acontece:
+- Participante é salvo no banco.
+- O sistema cria a relação com todos os eventos selecionados.
+- Exibe mensagem:
+  > `Cadastrado com sucesso! ID: X`
 
 ---
 
-## 🟨 Tela: Palestrante
+## 🟨 Tela: **Palestrante + Evento**
 
-Aba usada para **cadastrar palestrantes** e **vinculá-los automaticamente a eventos**.
+Aba usada para **registrar um novo palestrante** e **criar um evento associado a ele**.
 
-### ✅ Preencha:
+### ✅ O que preencher:
+
+#### 📋 Palestrante:
 - Nome do palestrante
 - Currículo
 - Área de atuação
-- Informações do evento:
-  - Nome
-  - Descrição
-  - Data
-  - Local
-  - Capacidade
+- Email
+
+#### 🗓️ Evento:
+- Nome do evento
+- **Descrição** (opcional)
+- Data (formato: `dd/mm/aaaa`)
+- Local
+- Capacidade (somente números)
+
+### ⚠️ Validações:
+- Campos obrigatórios devem estar preenchidos (exceto descrição).
+- Email válido deve conter `@` e `.com`.
+
+### 🔄 Comportamento inteligente:
+- Se o palestrante **já existir** (mesmo nome e email), **não é duplicado no banco** — apenas vinculado ao novo evento.
 
 ### 🟢 Clique em:
-**"Cadastrar Evento + Palestrante"**
+🔘 **"Cadastrar"**
 
-### 📣 Resultado:
-O sistema mostrará a mensagem:
-
-> `Evento e Palestrante cadastrados com sucesso! Evento ID: X`
+### 📣 O que acontece:
+- O sistema verifica se o palestrante já existe.
+- Cadastra o evento.
+- Cria o vínculo com o palestrante.
+- Exibe mensagem:
+  > `Evento cadastrados com sucesso!`
+  > `Palestrante cadastrado com ID: X` (Importante guardar esse identificador)
 
 ---
 
-## 🧪 Requisitos para rodar o sistema
+## 👁️ Tela: **Listar Eventos**
 
-- Maven instalado
-- Banco de dados **PostgreSQL** rodando
+Aba usada para **visualizar, editar ou excluir eventos existentes**, além de ver os participantes inscritos.
+
+### 📝 Ações disponíveis:
+- Atualizar Evento (com autenticação usando o identificador e email do palestrante)
+- Excluir Evento (com autenticação usando o identificador e email do palestrante)
+- Ver Participantes
+
+### 📣 Quando não há participantes:
+Exibe a mensagem centralizada:
+> `Nenhum participante ainda`
+
+---
+
+## 📦 Execução
+
+### Compilar:
+```bash
+mvn compile
+mvn exec:java -Dexec.mainClass="com.sistemaevento.MenuPrincipalSwing"
+---
