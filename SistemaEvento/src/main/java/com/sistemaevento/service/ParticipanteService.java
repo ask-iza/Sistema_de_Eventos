@@ -64,4 +64,26 @@ public class ParticipanteService {
         return dao.adicionarParticipante(p); // Cadastrar novo
     }
 
+    public String obterEmailCensurado(int participanteId) {
+        String email = dao.buscarEmailPorId(participanteId);
+        return censurarEmail(email);
+    }
+
+        private String censurarEmail(String email) {
+        if (email == null || !email.contains("@")) {
+            return email;
+        }
+
+        String[] partes = email.split("@");
+        String inicio = partes[0];
+        String dominio = partes[1];
+
+        if (inicio.length() <= 2) {
+            return "***@" + dominio;
+        }
+
+        String visivel = inicio.substring(0, 2);
+        String censurado = "*".repeat(inicio.length() - 2);
+        return visivel + censurado + "@" + dominio;
+    }
 }

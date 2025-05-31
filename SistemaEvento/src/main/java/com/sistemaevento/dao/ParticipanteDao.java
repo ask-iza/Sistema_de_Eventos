@@ -261,4 +261,23 @@ public class ParticipanteDao {
         return null;
     }
 
+    public String buscarEmailPorId(int id) {
+        String sql = "SELECT email FROM participante WHERE id = ?";
+
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("email");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar email do participante: " + e.getMessage());
+        }
+
+        return null;
+    }
 }

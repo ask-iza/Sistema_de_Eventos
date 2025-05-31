@@ -139,9 +139,11 @@ public class ListarEventosFormSwing {
             } else {
                 int count = 1;
                 for (Participante participante : participantes) {
+                    String emailCensurado = participanteService.obterEmailCensurado(participante.getId());
+
                     participantesPanel.add(new JLabel(count + "- Nome: " + participante.getNome()));
-                    participantesPanel.add(new JLabel("     E-mail: " + participante.getEmail()));
-                    participantesPanel.add(Box.createVerticalStrut(10)); // espaçamento
+                    participantesPanel.add(new JLabel("     E-mail: " + emailCensurado));
+                    participantesPanel.add(Box.createVerticalStrut(10));
                     count++;
                 }
             }
