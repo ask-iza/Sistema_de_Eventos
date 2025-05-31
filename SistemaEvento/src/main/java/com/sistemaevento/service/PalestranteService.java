@@ -26,4 +26,8 @@ public class PalestranteService {
         return dao.verificarPalestrante(id, email);
     }
 
+    public Palestrante buscarPalestrantePorId(int id) {
+        return dao.buscarPalestrantePorId(id);
+    }
+
 }

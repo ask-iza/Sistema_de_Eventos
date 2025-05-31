@@ -83,13 +83,16 @@ public class ParticipanteDao {
     }
 
     // Método para excluir um participante pelo ID
-    public void excluirParticipante(int id) {
+        public void excluirParticipante(int participanteId) {
         String sql = "DELETE FROM participante WHERE id = ?";
+        
         try (Connection conexao = new ConexaoBD().getConnection();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setInt(1, id);
+
+            stmt.setInt(1, participanteId);
             stmt.executeUpdate();
             System.out.println("Participante excluído com sucesso!");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,4 +143,30 @@ public class ParticipanteDao {
             System.err.println("Erro ao inscrever participante: " + e.getMessage());
         }
     }
+
+    public List<Participante> listarParticipantesPorEvento(int eventoId) {
+        List<Participante> participantes = new ArrayList<>();
+        String sql = "SELECT p.* FROM participante p " +
+                     "JOIN inscricoes i ON p.id = i.participante_id " +
+                     "WHERE i.evento_id = ?";
+
+        try (Connection conn = new ConexaoBD().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, eventoId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Participante participante = new Participante();
+                participante.setId(rs.getInt("id"));
+                participante.setNome(rs.getString("nome"));
+                participante.setEmail(rs.getString("email"));
+                participantes.add(participante);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return participantes;
+    }
+
 }

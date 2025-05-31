@@ -89,4 +89,28 @@ public class PalestranteDao {
         return false;
     }
 
+        public Palestrante buscarPalestrantePorId(int id) {
+        String sql = "SELECT * FROM palestrante WHERE id = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Palestrante palestrante = new Palestrante();
+                palestrante.setId(rs.getInt("id"));
+                palestrante.setNome(rs.getString("nome"));
+                palestrante.setCurriculo(rs.getString("curriculo"));
+                palestrante.setArea_atuacao(rs.getString("area_atuacao"));
+                palestrante.setEmail(rs.getString("email"));
+                return palestrante;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;  // Caso não encontre o palestrante
+    }
+
 }

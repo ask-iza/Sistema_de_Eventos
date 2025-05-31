@@ -31,4 +31,12 @@ public class ParticipanteService {
     public int adicionarRetornandoId(Participante p) {
         return dao.adicionarParticipante(p); // já existe no seu DAO
     } 
+
+    public List<Participante> listarParticipantesPorEvento(int eventoId) {
+        return dao.listarParticipantesPorEvento(eventoId);
+    }
+
+    public void excluirParticipante(int participanteId) {
+        dao.excluirParticipante(participanteId);
+    }
 }
