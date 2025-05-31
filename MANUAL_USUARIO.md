@@ -26,13 +26,19 @@ Aba usada para **cadastrar participantes** e **inscrevê-los em eventos existent
 - Selecionar pelo menos um evento (com nome, data, local, capacidade e nome do palestrante visíveis)
 
 ### 🟢 Clique em:
-🔘 **"Cadastrar e Inscrever"**
+🔘 **"Fazer Inscrição"**
 
 ### 📣 O que acontece:
 - Participante é salvo no banco.
 - O sistema cria a relação com todos os eventos selecionados.
 - Exibe mensagem:
   > `Cadastrado com sucesso! ID: X`
+
+- Também é possível acessar o botão **Minhas Inscrições**:
+  - Informa ID e e-mail para visualizar eventos em que está inscrito
+  - Pode editar nome e e-mail
+  - Pode emitir certificado com download em PDF
+  - Pode excluir inscrição de um evento
 
 ---
 
@@ -56,7 +62,7 @@ Aba usada para **registrar um novo palestrante** e **criar um evento associado a
 - Capacidade (somente números)
 
 ### ⚠️ Validações:
-- Campos obrigatórios devem estar preenchidos (exceto descrição).
+- Campos obrigatórios devem estar preenchidos.
 - Email válido deve conter `@` e `.com`.
 
 ### 🔄 Comportamento inteligente:
@@ -70,7 +76,7 @@ Aba usada para **registrar um novo palestrante** e **criar um evento associado a
 - Cadastra o evento.
 - Cria o vínculo com o palestrante.
 - Exibe mensagem:
-  > `Evento cadastrados com sucesso!`
+  > `Evento cadastrado com sucesso!`
   >> `Palestrante cadastrado com ID: X` (Importante guardar esse identificador)
 
 ---
@@ -82,18 +88,17 @@ Aba usada para **visualizar, editar ou excluir eventos existentes**, além de ve
 ### 📝 Ações disponíveis:
 - Atualizar Evento (com autenticação usando o identificador e email do palestrante)
 - Excluir Evento (com autenticação usando o identificador e email do palestrante)
-- Ver Participantes
-
-### 📣 Quando não há participantes:
-Exibe a mensagem centralizada:
-> `Nenhum participante ainda`
+- Ver Participantes:
+  - Lista todos os participantes com nome e e-mail **parcialmente censurado** por segurança
+  - Exibe mensagem:
+    > `Nenhum participante ainda` caso não haja inscritos
 
 ---
 
 ## 📦 Execução
 
-### Compilar:
+### Compilar e executar:
 ```bash
 mvn compile
 mvn exec:java -Dexec.mainClass="com.sistemaevento.MenuPrincipalSwing"
----
+```

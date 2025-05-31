@@ -1,4 +1,5 @@
-# 📘 Documentação Técnica – SistemaEvento
+
+# 📘 Documentação Técnica
 
 ---
 
@@ -9,6 +10,7 @@
 - **Banco de Dados:** PostgreSQL  
 - **Interface gráfica:** Java Swing  
 - **Gerenciador de dependências:** Maven  
+- **Geração de PDF:** iText (certificados)  
 
 ---
 
@@ -19,7 +21,8 @@ O SistemaEvento é uma aplicação desktop que permite:
 - Cadastrar **participantes** e vinculá-los a eventos
 - Cadastrar **palestrantes**, evitando duplicatas, e associá-los automaticamente a novos eventos
 - Gerenciar eventos com controle de inscrições e vínculos entre entidades
-- Visualizar participantes e ações vinculadas a cada evento
+- Visualizar participantes de cada evento (com e-mails parcialmente ocultos)
+- Emitir certificados de participação em PDF (com layout paisagem e dados personalizados)
 
 ---
 
@@ -33,7 +36,7 @@ A estrutura do projeto é organizada por responsabilidades:
 | `service`     | Lógica de negócio (intermediação entre front e banco) |
 | `tabelas`     | Entidades que refletem a estrutura do banco     |
 | `front`       | Interface do usuário via Java Swing             |
-| `util`        | Configuração de conexão e utilitários           |
+| `util`        | Conexão com banco e utilitários       |
 
 ---
 
@@ -41,27 +44,37 @@ A estrutura do projeto é organizada por responsabilidades:
 
 ### ▶️ Classe Inicial: `MenuPrincipalSwing`
 
-Essa classe é o ponto de entrada do sistema e permite a navegação entre abas.
+Responsável por iniciar a interface principal com as abas de funcionalidades.
 
 ---
 
 ### 👤 Participante
 
-1. Usuário preenche: **nome**, **email**, **eventos**
-2. É feita a validação do e-mail
-3. Participante é salvo no banco
-4. Uma entrada é criada na tabela `inscricoes` para cada evento selecionado
+- Cadastro de participante com nome, e-mail e seleção de eventos
+- E-mail é validado para conter `@` e `.com`
+- Participantes existentes são reutilizados para evitar duplicações
+- A tela “Minhas Inscrições” permite:
+  - Editar nome e e-mail
+  - Emitir certificado do evento
+  - Cancelar inscrição
 
 ---
 
 ### 🎤 Palestrante + Evento
 
-1. Usuário preenche dados do palestrante e evento
-2. Verificação se o palestrante já existe (nome e e-mail)
-   - Se sim, não cadastra duplicado
-   - Se não, cadastra novo
-3. Evento é criado
-4. Palestrante é vinculado ao evento via `evento_palestrante`
+- Cadastro integrado em uma única tela
+- Verificação automática se o palestrante já existe (por nome e e-mail)
+- Evita duplicidade no banco
+- Evento criado é automaticamente vinculado ao palestrante
+
+---
+
+### 📄 Certificado PDF
+
+- Gerado com layout paisagem
+- Inclui título, nome do participante, nome do evento, data e assinatura
+- Salvo automaticamente na área de trabalho do usuário
+- Emitido diretamente da interface com um clique no botão “Emitir Certificado”
 
 ---
 
@@ -82,7 +95,16 @@ Essa classe é o ponto de entrada do sistema e permite a navegação entre abas.
 
 ---
 
-## ⚙️ 6. Configuração do Ambiente
+## 🆕 6. Funcionalidades Adicionadas
+
+- 📄 **Certificados em PDF** (modo paisagem, personalizados)
+- 🔒 **Censura de e-mail de participantes** na tela de listagem (exibe apenas parte, exemplo: `jo***@gmail.com`)
+- 🔁 **Atualização do perfil** permite editar nome **e e-mail** diretamente pela interface
+- 🧠 **Validação automática** ao reutilizar palestrantes e participantes existentes
+
+---
+
+## ⚙️ 7. Configuração do Ambiente
 
 ### 📦 Dependência Maven:
 
@@ -93,10 +115,15 @@ Essa classe é o ponto de entrada do sistema e permite a navegação entre abas.
     <artifactId>postgresql</artifactId>
     <version>42.5.0</version>
   </dependency>
+  <dependency>
+    <groupId>com.itextpdf</groupId>
+    <artifactId>itextpdf</artifactId>
+    <version>5.5.13.3</version>
+  </dependency>
 </dependencies>
 ```
 
-### 🔌 Conexão com o banco (ConexaoBD.java):
+### 🔌 Conexão com o banco (`ConexaoBD.java`):
 
 ```java
 conn = DriverManager.getConnection(
@@ -109,7 +136,7 @@ conn = DriverManager.getConnection(
 
 ---
 
-## 🧪 7. Execução
+## 🧪 8. Execução
 
 ### Compilar:
 ```bash
@@ -123,14 +150,14 @@ mvn exec:java -Dexec.mainClass="com.sistemaevento.MenuPrincipalSwing"
 
 ---
 
-## 👥 8. Equipe e Autoria
+## 👥 9. Equipe e Autoria
 
 | Membro     | Responsável por:                             |
 |------------|----------------------------------------------|
-| **Victor**   | Interface Swing e usabilidade              |
-| **Samantha** | Lógica de negócio e entidades (services)   |
-| **Rayssa**   | Integração com PostgreSQL e camada DAO     |
+| **Victor**   | Interface Swing, lógica de interação e PDF |
+| **Samantha** | DAO e serviços                             |
+| **Rayssa**   | Lógica de negócio, integração com PostgreSQL e infraestrutura |
 
 ---
 
-> 🛠️ Atualizado em: **Maio**
+> 🛠️ Atualizado em: **Maio de 2025**  
