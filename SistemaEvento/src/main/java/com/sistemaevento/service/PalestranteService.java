@@ -1,7 +1,5 @@
 package com.sistemaevento.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.sistemaevento.dao.PalestranteDao;
