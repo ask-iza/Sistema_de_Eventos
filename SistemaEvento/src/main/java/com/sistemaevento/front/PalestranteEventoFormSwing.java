@@ -32,7 +32,27 @@ public class PalestranteEventoFormSwing {
         JTextField nomePalestranteField = new JTextField();
         JTextField curriculoField = new JTextField();
         JTextField areaField = new JTextField();
+
         JTextField emailField = new JTextField();
+        emailField.setText("exemplo@gmail.com");
+        emailField.setForeground(Color.GRAY);
+
+        emailField.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (emailField.getText().equals("exemplo@gmail.com")) {
+                    emailField.setText("");
+                    emailField.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (emailField.getText().isEmpty()) {
+                    emailField.setText("exemplo@gmail.com");
+                    emailField.setForeground(Color.GRAY);
+                }
+            }
+        });
 
         participantePanel.add(criarLinhaAlinhada("Nome do Palestrante:", nomePalestranteField));
         participantePanel.add(Box.createVerticalStrut(10));
@@ -52,7 +72,27 @@ public class PalestranteEventoFormSwing {
         eventoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JTextField nomeEventoField = new JTextField();
+
         JTextField descricaoField = new JTextField();
+        descricaoField.setText("Opcional");
+        descricaoField.setForeground(Color.GRAY);
+
+        descricaoField.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (descricaoField.getText().equals("Opcional")) {
+                    descricaoField.setText("");
+                    descricaoField.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (descricaoField.getText().isEmpty()) {
+                    descricaoField.setText("Opcional");
+                    descricaoField.setForeground(Color.GRAY);
+                }
+            }
+        });
 
         final JFormattedTextField[] dataField = new JFormattedTextField[1];
         dataField[0] = new JFormattedTextField();

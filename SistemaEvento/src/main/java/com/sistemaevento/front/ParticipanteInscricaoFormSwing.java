@@ -24,6 +24,25 @@ public class ParticipanteInscricaoFormSwing {
 
         JTextField nomeField = new JTextField();
         JTextField emailField = new JTextField();
+        emailField.setText("exemplo@gmail.com");
+        emailField.setForeground(Color.GRAY);
+
+        emailField.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (emailField.getText().equals("exemplo@gmail.com")) {
+                    emailField.setText("");
+                    emailField.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (emailField.getText().isEmpty()) {
+                    emailField.setText("exemplo@gmail.com");
+                    emailField.setForeground(Color.GRAY);
+                }
+            }
+        });
 
         JLabel eventoLabel = new JLabel("Selecione eventos:");
 
