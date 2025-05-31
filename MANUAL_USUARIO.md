@@ -10,8 +10,6 @@
 
 ---
 
----
-
 ### 🚀 Classe principal: `MenuPrincipalSwing`
 
 Essa é a classe inicial que abre a interface gráfica do sistema.
@@ -73,7 +71,7 @@ Aba usada para **registrar um novo palestrante** e **criar um evento associado a
 - Cria o vínculo com o palestrante.
 - Exibe mensagem:
   > `Evento cadastrados com sucesso!`
-  > `Palestrante cadastrado com ID: X` (Importante guardar esse identificador)
+  >> `Palestrante cadastrado com ID: X` (Importante guardar esse identificador)
 
 ---
 
