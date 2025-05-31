@@ -199,5 +199,41 @@ public class EventoDao {
 
         return eventos;
     } 
+
+    public List<Evento> buscarEventosPorParticipante(int participanteId) {
+        List<Evento> eventos = new ArrayList<>();
+        String sql = """
+            SELECT e.id, e.nome, e.descricao, e.data, e.local, e.capacidade, p.nome AS palestrante_nome
+            FROM evento e
+            JOIN inscricoes i ON e.id = i.evento_id
+            LEFT JOIN evento_palestrante ep ON e.id = ep.evento_id
+            LEFT JOIN palestrante p ON ep.palestrante_id = p.id
+            WHERE i.participante_id = ?
+        """;
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, participanteId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Evento e = new Evento();
+                e.setId(rs.getInt("id"));
+                e.setNome(rs.getString("nome"));
+                e.setDescricao(rs.getString("descricao"));
+                e.setData(rs.getString("data"));
+                e.setLocal(rs.getString("local"));
+                e.setCapacidade(rs.getInt("capacidade"));
+                e.setPalestranteNome(rs.getString("palestrante_nome")); // agora corretamente preenchido
+                eventos.add(e);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return eventos;
+    }
+
         
 }

@@ -136,6 +136,9 @@ public class PalestranteEventoFormSwing {
         eventoPanel.add(Box.createVerticalStrut(10));
 
         JButton cadastrarButton = new JButton("Cadastrar");
+        cadastrarButton.setPreferredSize(new Dimension(200, 50));
+        cadastrarButton.setMaximumSize(new Dimension(Short.MAX_VALUE, 50));
+        cadastrarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         cadastrarButton.addActionListener(e -> {
             try {

@@ -36,8 +36,32 @@ public class ParticipanteService {
         return dao.listarParticipantesPorEvento(eventoId);
     }
 
-    public void excluirParticipante(int participanteId) {
-        dao.excluirParticipante(participanteId);
+    public boolean verificarCredenciais(int id, String email) {
+        return dao.verificarCredenciais(id, email);
+    }
+    
+    public Participante buscarPorId(int id) {
+        return dao.buscarPorId(id);
+    }
+
+    public boolean atualizar(Participante participante) {
+        return dao.atualizar(participante);
+    }
+
+    public boolean removerInscricao(int participanteId, int eventoId) {
+        return dao.removerInscricao(participanteId, eventoId);
+    } 
+
+    public boolean jaInscritoNoEvento(int participanteId, int eventoId) {
+        return dao.jaInscrito(participanteId, eventoId);
+    }
+
+    public int obterOuCadastrarParticipante(Participante p) {
+        Participante existente = dao.buscarPorEmail(p.getEmail());
+        if (existente != null) {
+            return existente.getId(); // Já existe
+        }
+        return dao.adicionarParticipante(p); // Cadastrar novo
     }
 
 }

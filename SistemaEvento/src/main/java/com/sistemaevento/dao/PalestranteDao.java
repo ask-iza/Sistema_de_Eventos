@@ -148,5 +148,4 @@ public class PalestranteDao {
 
         return null;
     }
-
 }

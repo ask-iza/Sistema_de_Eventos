@@ -39,6 +39,9 @@ public class EventoService {
     public void vincularPalestrante(int eventoId, int palestranteId) {
         dao.vincularPalestranteAoEvento(eventoId, palestranteId);
         
-    } 
+    }
 
+    public List<Evento> buscarEventosPorParticipante(int participanteId) {
+        return dao.buscarEventosPorParticipante(participanteId);
+    }
 }

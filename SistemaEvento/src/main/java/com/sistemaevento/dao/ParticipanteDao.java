@@ -82,22 +82,6 @@ public class ParticipanteDao {
         return null;
     }
 
-    // Método para excluir um participante pelo ID
-        public void excluirParticipante(int participanteId) {
-        String sql = "DELETE FROM participante WHERE id = ?";
-        
-        try (Connection conexao = new ConexaoBD().getConnection();
-             PreparedStatement stmt = conexao.prepareStatement(sql)) {
-
-            stmt.setInt(1, participanteId);
-            stmt.executeUpdate();
-            System.out.println("Participante excluído com sucesso!");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void cadastrarParticipante(Participante participante) {
         String sql = "INSERT INTO participante (nome, email) VALUES (?, ?)";
 
@@ -167,6 +151,114 @@ public class ParticipanteDao {
             e.printStackTrace();
         }
         return participantes;
+    }
+
+    public boolean verificarCredenciais(int id, String email) {
+        String sql = "SELECT 1 FROM participante WHERE id = ? AND email = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.setString(2, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // retorna true se encontrou
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Participante buscarPorId(int id) {
+        String sql = "SELECT * FROM participante WHERE id = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Participante p = new Participante();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setEmail(rs.getString("email"));
+                return p;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+        public boolean atualizar(Participante participante) {
+        String sql = "UPDATE participante SET nome = ?, email = ? WHERE id = ?";
+
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, participante.getNome());
+            stmt.setString(2, participante.getEmail());
+            stmt.setInt(3, participante.getId());
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+        public boolean removerInscricao(int participanteId, int eventoId) {
+        String sql = "DELETE FROM inscricoes WHERE participante_id = ? AND evento_id = ?";
+
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, participanteId);
+            stmt.setInt(2, eventoId);
+
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+        public boolean jaInscrito(int participanteId, int eventoId) {
+        String sql = "SELECT COUNT(*) FROM inscricoes WHERE participante_id = ? AND evento_id = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, participanteId);
+            stmt.setInt(2, eventoId);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Participante buscarPorEmail(String email) {
+        String sql = "SELECT * FROM participante WHERE email = ?";
+        try (Connection conn = new ConexaoBD().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Participante p = new Participante();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setEmail(rs.getString("email"));
+                return p;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

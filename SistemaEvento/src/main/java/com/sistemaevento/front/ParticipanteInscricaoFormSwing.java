@@ -1,8 +1,8 @@
 package com.sistemaevento.front;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.sistemaevento.service.EventoService;
@@ -14,13 +14,12 @@ public class ParticipanteInscricaoFormSwing {
 
     private final ParticipanteService participanteService = new ParticipanteService();
     private final EventoService eventoService = new EventoService();
-
-    private List<Evento> eventosCarregados = new ArrayList<>();
+    private List<Evento> eventosCarregados;
 
     public JPanel criarPainel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+        panel.setBorder(new EmptyBorder(20, 40, 20, 40));
 
         JTextField nomeField = new JTextField();
         JTextField emailField = new JTextField();
@@ -35,6 +34,7 @@ public class ParticipanteInscricaoFormSwing {
                     emailField.setForeground(Color.BLACK);
                 }
             }
+
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
                 if (emailField.getText().isEmpty()) {
@@ -45,13 +45,10 @@ public class ParticipanteInscricaoFormSwing {
         });
 
         JLabel eventoLabel = new JLabel("Selecione eventos:");
-
         eventosCarregados = eventoService.listarComPalestrante();
-
         DefaultListModel<String> listaEventosModel = new DefaultListModel<>();
-        for (Evento evento : eventosCarregados) {
-            String nomePalestrante = evento.getPalestranteNome() != null ? evento.getPalestranteNome() : "Convidado Especial";
 
+        for (Evento evento : eventosCarregados) {
             String bloco = String.format(
                 "%s\nDescrição: %s\nData: %s\nLocal: %s\nCapacidade: %d\nPalestrante: %s",
                 evento.getNome(),
@@ -59,7 +56,7 @@ public class ParticipanteInscricaoFormSwing {
                 evento.getData(),
                 evento.getLocal(),
                 evento.getCapacidade(),
-                nomePalestrante
+                evento.getPalestranteNome() == null ? "Convidado Especial" : evento.getPalestranteNome()
             );
             listaEventosModel.addElement(bloco);
         }
@@ -82,7 +79,7 @@ public class ParticipanteInscricaoFormSwing {
         JScrollPane scrollPane = new JScrollPane(listaEventos);
         scrollPane.setPreferredSize(new Dimension(500, 200));
 
-        JButton cadastrarButton = new JButton("Cadastrar e Inscrever");
+        JButton cadastrarButton = new JButton("Fazer Inscrição");
         cadastrarButton.setPreferredSize(new Dimension(200, 50));
         cadastrarButton.setMaximumSize(new Dimension(Short.MAX_VALUE, 50));
         cadastrarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -105,7 +102,7 @@ public class ParticipanteInscricaoFormSwing {
             Participante participante = new Participante();
             participante.setNome(nome);
             participante.setEmail(email);
-            int idGerado = participanteService.adicionarRetornandoId(participante);
+            int idGerado = participanteService.obterOuCadastrarParticipante(participante);
 
             if (idGerado > 0) {
                 for (int idx : indicesSelecionados) {
@@ -121,6 +118,38 @@ public class ParticipanteInscricaoFormSwing {
             }
         });
 
+        JButton minhasInscricoesButton = new JButton("Minhas Inscrições");
+        minhasInscricoesButton.setPreferredSize(new Dimension(200, 50));
+        minhasInscricoesButton.setMaximumSize(new Dimension(Short.MAX_VALUE, 50));
+        minhasInscricoesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        minhasInscricoesButton.addActionListener(e -> {
+            JTextField idField = new JTextField();
+            JTextField emailLoginField = new JTextField();
+
+            JPanel loginPanel = new JPanel(new GridLayout(2, 2));
+            loginPanel.add(new JLabel("ID do Participante:"));
+            loginPanel.add(idField);
+            loginPanel.add(new JLabel("E-mail:"));
+            loginPanel.add(emailLoginField);
+
+            int result = JOptionPane.showConfirmDialog(null, loginPanel, "Acessar Minhas Inscrições", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    int id = Integer.parseInt(idField.getText().trim());
+                    String email = emailLoginField.getText().trim();
+                    boolean credenciaisValidas = participanteService.verificarCredenciais(id, email);
+                    if (!credenciaisValidas) {
+                        JOptionPane.showMessageDialog(null, "Credenciais inválidas. Verifique ID e E-mail.", "Erro", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    new ConsultaInscricoesFormSwing().mostrarJanela(id, email);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "ID deve ser um número.", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         panel.add(criarLinhaAlinhada("Nome:", nomeField));
         panel.add(Box.createVerticalStrut(10));
         panel.add(criarLinhaAlinhada("Email:", emailField));
@@ -130,6 +159,8 @@ public class ParticipanteInscricaoFormSwing {
         panel.add(scrollPane);
         panel.add(Box.createVerticalStrut(20));
         panel.add(cadastrarButton);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(minhasInscricoesButton);
 
         return panel;
     }
