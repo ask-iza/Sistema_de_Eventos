@@ -21,7 +21,7 @@ public class PalestranteEventoFormSwing {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(new EmptyBorder(20, 40, 20, 40));
 
-        JLabel tituloParticipante = new JLabel("Dados do Participante");
+        JLabel tituloParticipante = new JLabel("Dados do Palestrante");
         tituloParticipante.setFont(new Font("Arial", Font.BOLD, 16));
         tituloParticipante.setAlignmentX(Component.CENTER_ALIGNMENT);
 
