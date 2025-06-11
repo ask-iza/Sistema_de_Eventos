@@ -162,8 +162,8 @@ public class PalestranteEventoFormSwing {
                     return;
                 }
 
-                if (!(email.contains("@") && email.contains(".com"))) {
-                    JOptionPane.showMessageDialog(panel, "Email inválido! Deve conter '@' e '.com'.", "Erro", JOptionPane.ERROR_MESSAGE);
+                if (!(email.contains("@"))) {
+                    JOptionPane.showMessageDialog(panel, "Email inválido! Deve conter '@'", "Erro", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 

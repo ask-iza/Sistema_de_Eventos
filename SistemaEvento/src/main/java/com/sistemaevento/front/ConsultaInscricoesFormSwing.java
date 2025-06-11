@@ -52,8 +52,8 @@ public class ConsultaInscricoesFormSwing {
                     return;
                 }
 
-                if (!novoEmail.contains("@") || !novoEmail.contains(".")) {
-                    JOptionPane.showMessageDialog(frame, "Email inválido! Deve conter '@' e '.com'.", "Erro", JOptionPane.ERROR_MESSAGE);
+                if (!novoEmail.contains("@")) {
+                    JOptionPane.showMessageDialog(frame, "Email inválido! Deve conter '@'", "Erro", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
